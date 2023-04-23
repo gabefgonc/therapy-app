@@ -59,7 +59,7 @@ class _MoodTabState extends State<MoodTab> {
         Expanded(
           child: Container(
               color: Colors.grey[300],
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               child: ListView.builder(
                 itemCount: 6,
                 shrinkWrap: false,

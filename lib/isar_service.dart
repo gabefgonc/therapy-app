@@ -17,4 +17,19 @@ class IsarService {
     isar.writeTxnSync(() => isar.therapyNotes.putSync(note));
     return note;
   }
+
+  editNote(Id id, String newTitle, String newBody) {
+    isar.writeTxnSync(() {
+      final note = isar.therapyNotes.getSync(id);
+      if (note != null) {
+        note.body = newBody;
+        note.title = newTitle;
+        isar.therapyNotes.putSync(note);
+      }
+    });
+  }
+
+  deleteNote(Id id) {
+    isar.writeTxnSync(() => isar.therapyNotes.deleteSync(id));
+  }
 }

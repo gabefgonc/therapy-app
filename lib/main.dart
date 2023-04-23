@@ -32,15 +32,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: Provider(
-            create: (context) => IsarService(isar: isar),
-            child: FutureBuilder(
+    return Provider(
+        create: (context) => IsarService(isar: isar),
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: FutureBuilder(
                 builder: (_, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return const Scaffold(
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
                   if (snapshot.hasError) {
                     return Scaffold(body: Text('${snapshot.error}'));
                   }
-                  return const HomePage();
+                  return const HomePage(tab: 0);
                 },
                 future: _isFirstTime())));
   }

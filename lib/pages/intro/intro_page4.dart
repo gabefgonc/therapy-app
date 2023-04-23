@@ -41,8 +41,10 @@ class IntroPage4 extends StatelessWidget {
               }
             });
             if (textNotEmpty) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomePage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const HomePage(tab: 0)));
             }
           },
           child: const Text('Let\'s go!')),

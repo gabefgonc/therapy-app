@@ -6,7 +6,8 @@ import 'package:mood_app/tabs/therapy_notes.dart';
 const pages = <Widget>[MoodTab(), TherapyNotesTab(), MoodTab()];
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final int tab;
+  const HomePage({super.key, required this.tab});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,6 +15,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.tab;
+  }
 
   @override
   Widget build(BuildContext context) {

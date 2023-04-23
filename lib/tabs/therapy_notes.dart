@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mood_app/isar_service.dart';
+import 'package:mood_app/pages/therapy_note_view.dart';
+import 'package:mood_app/utils/limit_string_size.dart';
 import 'package:provider/provider.dart';
 
 class TherapyNotesTab extends StatelessWidget {
@@ -45,8 +47,10 @@ class TherapyNotesTab extends StatelessWidget {
                   children: <Widget>[
                     IconButton(
                         onPressed: () {
-                          isarService.createNote('test',
-                              'Today I tested something that I should do beacause i like pigs');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TherapyNoteViewPage()));
                         },
                         icon: const Icon(Icons.add)),
                   ],
@@ -63,15 +67,51 @@ class TherapyNotesTab extends StatelessWidget {
                               case ConnectionState.active:
                                 widget = ListView.builder(
                                   itemBuilder: (_, idx) {
+                                    final data = snapshot.data![idx];
                                     return Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      margin: const EdgeInsets.all(10),
                                       padding: const EdgeInsets.all(15),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(snapshot.data?[idx].title ?? ''),
-                                          Text(
-                                              '${snapshot.data?[idx].body?.substring(0, 24) ?? ""}...')
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                  limitStringSize(
+                                                      data.title!, 24),
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 22,
+                                                  )),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                TherapyNoteViewPage(
+                                                                    id: data.id,
+                                                                    title: data
+                                                                        .title,
+                                                                    body: data
+                                                                        .body)));
+                                                  },
+                                                  icon: Icon(Icons.edit,
+                                                      color:
+                                                          Colors.grey.shade800))
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Text(limitStringSize(data.body!, 48))
                                         ],
                                       ),
                                     );
