@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:mood_app/isar_service.dart';
+import 'package:mood_app/models/mood_registration.dart';
 import 'package:mood_app/models/therapy_note.dart';
 import 'package:mood_app/pages/first_time.dart';
 import 'package:mood_app/pages/home.dart';
@@ -11,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dir = await getApplicationSupportDirectory();
-  final isar = await Isar.open([TherapyNoteSchema],
+  final isar = await Isar.open([TherapyNoteSchema, MoodRegistrationSchema],
       directory: dir.path, inspector: true);
   runApp(MyApp(isar: isar));
 }

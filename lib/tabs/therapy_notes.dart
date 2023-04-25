@@ -57,7 +57,7 @@ class TherapyNotesTab extends StatelessWidget {
                 ),
                 Expanded(
                     child: StreamBuilder(
-                        builder: (context_, snapshot) {
+                        builder: (_, snapshot) {
                           Widget widget;
                           if (snapshot.hasError) {
                             return const Center(

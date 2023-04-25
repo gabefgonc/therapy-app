@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:mood_app/models/mood_registration.dart';
 import 'package:mood_app/models/therapy_note.dart';
 
 class IsarService {
@@ -31,5 +32,25 @@ class IsarService {
 
   deleteNote(Id id) {
     isar.writeTxnSync(() => isar.therapyNotes.deleteSync(id));
+  }
+
+  MoodRegistration registerMood(List<Mood> moods) {
+    final reg = MoodRegistration()
+      ..moods = moods
+      ..createdAt = DateTime.now();
+    isar.writeTxnSync(() => isar.moodRegistrations.putSync(reg));
+    return reg;
+  }
+
+  Stream<List<MoodRegistration>> listenForMoodRegistrations() async* {
+    yield* isar.moodRegistrations.where().watch(fireImmediately: true);
+  }
+
+  void addMoodToDayRegister(Mood mood, Id id) {
+    final register = isar.moodRegistrations.getSync(id);
+    if (register != null) {
+      register.moods!.add(mood);
+      isar.moodRegistrations.putSync(register);
+    }
   }
 }
