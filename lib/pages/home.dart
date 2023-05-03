@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
         // this outer container keeps the border radius background transparent.
         color: Colors.grey.shade300,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15.0),
           decoration: BoxDecoration(
               color: Colors.blue.shade700,
               borderRadius: const BorderRadius.only(
@@ -38,9 +38,9 @@ class _HomePageState extends State<HomePage> {
           child: GNav(
               backgroundColor: Colors.blue.shade700,
               color: Colors.white,
+              gap: 8,
               activeColor: Colors.white,
               tabBackgroundColor: Colors.blue.shade400,
-              gap: 8,
               padding: const EdgeInsets.all(16),
               selectedIndex: _selectedIndex,
               onTabChange: (index) => {
@@ -51,7 +51,6 @@ class _HomePageState extends State<HomePage> {
               tabs: const [
                 GButton(icon: Icons.emoji_emotions, text: 'Mood'),
                 GButton(icon: Icons.chair, text: 'Therapy'),
-                GButton(icon: Icons.camera_alt, text: 'Memories'),
               ]),
         ),
       ),

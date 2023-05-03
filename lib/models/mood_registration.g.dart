@@ -555,14 +555,24 @@ const MoodSchema = Schema(
   name: r'Mood',
   id: 6108270824894609419,
   properties: {
-    r'emote': PropertySchema(
+    r'createdAt': PropertySchema(
       id: 0,
+      name: r'createdAt',
+      type: IsarType.dateTime,
+    ),
+    r'emote': PropertySchema(
+      id: 1,
       name: r'emote',
       type: IsarType.string,
     ),
     r'emoteExplanation': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'emoteExplanation',
+      type: IsarType.string,
+    ),
+    r'emoteName': PropertySchema(
+      id: 3,
+      name: r'emoteName',
       type: IsarType.string,
     )
   },
@@ -590,6 +600,12 @@ int _moodEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.emoteName;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -599,8 +615,10 @@ void _moodSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.emote);
-  writer.writeString(offsets[1], object.emoteExplanation);
+  writer.writeDateTime(offsets[0], object.createdAt);
+  writer.writeString(offsets[1], object.emote);
+  writer.writeString(offsets[2], object.emoteExplanation);
+  writer.writeString(offsets[3], object.emoteName);
 }
 
 Mood _moodDeserialize(
@@ -609,9 +627,12 @@ Mood _moodDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Mood();
-  object.emote = reader.readStringOrNull(offsets[0]);
-  object.emoteExplanation = reader.readStringOrNull(offsets[1]);
+  final object = Mood(
+    emote: reader.readStringOrNull(offsets[1]),
+    emoteExplanation: reader.readStringOrNull(offsets[2]),
+    emoteName: reader.readStringOrNull(offsets[3]),
+  );
+  object.createdAt = reader.readDateTime(offsets[0]);
   return object;
 }
 
@@ -623,8 +644,12 @@ P _moodDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 1:
+      return (reader.readStringOrNull(offset)) as P;
+    case 2:
+      return (reader.readStringOrNull(offset)) as P;
+    case 3:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -632,6 +657,59 @@ P _moodDeserializeProp<P>(
 }
 
 extension MoodQueryFilter on QueryBuilder<Mood, Mood, QFilterCondition> {
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> createdAtEqualTo(
+      DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> createdAtGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> createdAtLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> createdAtBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdAt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -917,6 +995,152 @@ extension MoodQueryFilter on QueryBuilder<Mood, Mood, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'emoteExplanation',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'emoteName',
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'emoteName',
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'emoteName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'emoteName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'emoteName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'emoteName',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'emoteName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'emoteName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'emoteName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'emoteName',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'emoteName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Mood, Mood, QAfterFilterCondition> emoteNameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'emoteName',
         value: '',
       ));
     });

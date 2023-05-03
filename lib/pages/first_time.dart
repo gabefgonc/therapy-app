@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mood_app/pages/home.dart';
 import 'package:mood_app/pages/intro/intro_page4.dart';
 import 'package:mood_app/pages/intro/intro_page_2.dart';
 import 'package:mood_app/pages/intro/intro_page_3.dart';

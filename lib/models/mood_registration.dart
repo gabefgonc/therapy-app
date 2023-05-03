@@ -6,7 +6,7 @@ part 'mood_registration.g.dart';
 class MoodRegistration {
   Id id = Isar.autoIncrement;
 
-  List<Mood>? moods;
+  List<Mood>? moods = List.empty(growable: true);
 
   DateTime? createdAt;
 }
@@ -15,4 +15,8 @@ class MoodRegistration {
 class Mood {
   String? emote;
   String? emoteExplanation;
+  String? emoteName;
+
+  DateTime createdAt = DateTime.now();
+  Mood({this.emote, this.emoteExplanation, this.emoteName});
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mood_app/isar_service.dart';
 import 'package:mood_app/pages/therapy_note_view.dart';
 import 'package:mood_app/utils/limit_string_size.dart';
@@ -10,6 +11,7 @@ class TherapyNotesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isarService = Provider.of<IsarService>(context);
+    final formatter = DateFormat('MMMd, y - Hm');
 
     return SafeArea(
         child: Column(
@@ -108,10 +110,14 @@ class TherapyNotesTab extends StatelessWidget {
                                                           Colors.grey.shade800))
                                             ],
                                           ),
+                                          Text(limitStringSize(data.body!, 48),
+                                              style: const TextStyle(
+                                                  fontSize: 18)),
                                           const SizedBox(
                                             height: 15,
                                           ),
-                                          Text(limitStringSize(data.body!, 48))
+                                          Text(
+                                              formatter.format(data.createdAt!))
                                         ],
                                       ),
                                     );

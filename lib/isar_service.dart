@@ -49,8 +49,16 @@ class IsarService {
   void addMoodToDayRegister(Mood mood, Id id) {
     final register = isar.moodRegistrations.getSync(id);
     if (register != null) {
-      register.moods!.add(mood);
-      isar.moodRegistrations.putSync(register);
+      register.moods = [...register.moods!, mood];
+      isar.writeTxnSync(() => isar.moodRegistrations.putSync(register));
+    }
+  }
+
+  MoodRegistration? getLatestMoodRegistration() {
+    try {
+      return isar.moodRegistrations.where().findAllSync().last;
+    } catch (e) {
+      return null;
     }
   }
 }
